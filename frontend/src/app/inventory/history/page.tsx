@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { api } from "@/lib/api";
 
 export default function InventoryHistoryPage() {
   const [movements, setMovements] = useState<any[]>([]);
@@ -15,7 +16,7 @@ export default function InventoryHistoryPage() {
   useEffect(() => {
     async function fetchHistory() {
       try {
-        const res = await fetch('http://localhost:8000/api/inventory/history');
+        const res = await fetch(api('/api/inventory/history'));
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         setMovements(data);

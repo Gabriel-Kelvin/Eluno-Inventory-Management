@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Plus, Edit, AlertTriangle, PackageOpen, PackageX, Loader2, ArrowUpRight, ArrowRight, PackagePlus } from "lucide-react";
 import { format } from "date-fns";
+import { api } from "@/lib/api";
 
 export default function InventoryPage() {
   const [inventory, setInventory] = useState<any[]>([]);
@@ -35,9 +36,9 @@ export default function InventoryPage() {
     setLoading(true);
     try {
       const [invRes, statsRes, queueRes] = await Promise.all([
-        fetch('http://localhost:8000/api/inventory'),
-        fetch('http://localhost:8000/api/inventory/stats'),
-        fetch('http://localhost:8000/api/inventory/procurement-queue')
+        fetch(api('/api/inventory')),
+        fetch(api('/api/inventory/stats')),
+        fetch(api('/api/inventory/procurement-queue'))
       ]);
       if (!invRes.ok || !statsRes.ok || !queueRes.ok) throw new Error("Failed to fetch");
       setInventory(await invRes.json());
@@ -62,7 +63,7 @@ export default function InventoryPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8000/api/inventory', {
+      const res = await fetch(api('/api/inventory'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -90,7 +91,7 @@ export default function InventoryPage() {
   const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:8000/api/inventory/${activeItem.id}`, {
+      const res = await fetch(api(`/api/inventory/${activeItem.id}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -110,7 +111,7 @@ export default function InventoryPage() {
 
   const handleAdjust = async (amount: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/inventory/${activeItem.id}/adjust`, {
+      const res = await fetch(api(`/api/inventory/${activeItem.id}/adjust`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
@@ -126,7 +127,7 @@ export default function InventoryPage() {
 
   const handleRestock = async (itemId: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/inventory/${itemId}/restock`, {
+      const res = await fetch(api(`/api/inventory/${itemId}/restock`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: 20 })
@@ -153,7 +154,7 @@ export default function InventoryPage() {
       handleRestock(item.id);
     } else {
       try {
-        const res = await fetch('http://localhost:8000/api/inventory', {
+        const res = await fetch(api('/api/inventory'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

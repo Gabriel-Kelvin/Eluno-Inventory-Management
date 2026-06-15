@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { api } from "@/lib/api";
 
 export default function CreateOrderPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function CreateOrderPage() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/orders/", {
+      const response = await fetch(api("/api/orders/"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

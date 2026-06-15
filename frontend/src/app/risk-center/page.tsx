@@ -9,6 +9,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, B
 import { AlertTriangle, TrendingUp, RefreshCw, AlertCircle, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 export default function RiskCenterPage() {
   const [highRiskOrders, setHighRiskOrders] = useState<any[]>([]);
@@ -20,8 +21,8 @@ export default function RiskCenterPage() {
     setLoading(true);
     try {
       const [riskRes, forecastRes] = await Promise.all([
-        fetch("http://localhost:8000/api/orders/risk"),
-        fetch("http://localhost:8000/api/forecast")
+        fetch(api("/api/orders/risk")),
+        fetch(api("/api/forecast"))
       ]);
       const riskData = await riskRes.json();
       const forecastData = await forecastRes.json();
@@ -40,7 +41,7 @@ export default function RiskCenterPage() {
 
   const handleRecalculate = async () => {
     setRecalculating(true);
-    await fetch("http://localhost:8000/api/orders/recalculate-risk", { method: "POST" });
+    await fetch(api("/api/orders/recalculate-risk"), { method: "POST" });
     fetchRiskData();
     setRecalculating(false);
   };

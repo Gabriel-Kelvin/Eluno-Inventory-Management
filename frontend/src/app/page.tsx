@@ -3,15 +3,16 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Package, AlertTriangle, CheckCircle, TrendingUp } from "lucide-react";
 import { DashboardCharts } from "@/components/dashboard/DashboardCharts";
+import { api } from "@/lib/api";
 
 export const revalidate = 0; // Dynamic page
 
 async function getDashboardData() {
   try {
     const [statsRes, inventoryRes, ordersRes] = await Promise.all([
-      fetch('http://localhost:8000/api/inventory/stats', { cache: 'no-store' }),
-      fetch('http://localhost:8000/api/inventory', { cache: 'no-store' }),
-      fetch('http://localhost:8000/api/orders', { cache: 'no-store' })
+      fetch(api('/api/inventory/stats'), { cache: 'no-store' }),
+      fetch(api('/api/inventory'), { cache: 'no-store' }),
+      fetch(api('/api/orders'), { cache: 'no-store' })
     ]);
 
     if (!statsRes.ok || !inventoryRes.ok || !ordersRes.ok) {

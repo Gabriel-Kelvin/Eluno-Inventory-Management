@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Send, Bot, User, ShieldAlert, PackageOpen, AlertTriangle, PackageX, FileWarning, Sparkles, Activity, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
+import { api } from "@/lib/api";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -35,9 +36,9 @@ export default function CommandCenterPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("http://localhost:8000/api/operations/briefing").then(r => r.json()),
-      fetch("http://localhost:8000/api/operations/demo-stats").then(r => r.json()),
-      fetch("http://localhost:8000/api/operations/recent-alerts").then(r => r.json())
+      fetch(api("/api/operations/briefing")).then(r => r.json()),
+      fetch(api("/api/operations/demo-stats")).then(r => r.json()),
+      fetch(api("/api/operations/recent-alerts")).then(r => r.json())
     ]).then(([briefingData, demoData, alertsData]) => {
       setData(briefingData);
       setDemoStats(demoData);

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, CheckCircle2, Clock, AlertCircle, XCircle, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 const VALID_TRANSITIONS: Record<string, { label: string, next: string }[]> = {
   "PLACED": [{ label: "Move To Prescription Verification", next: "PRESCRIPTION_VERIFICATION" }],
@@ -41,7 +42,7 @@ export default function OrderDetailPage() {
 
   const fetchOrder = () => {
     setLoading(true);
-    fetch(`http://localhost:8000/api/orders/${orderId}`)
+    fetch(api(`/api/orders/${orderId}`))
       .then(res => res.json())
       .then(data => {
         setOrder(data);
@@ -56,7 +57,7 @@ export default function OrderDetailPage() {
   const handleUpdateStatus = async (nextStatus: string, actionLabel: string) => {
     setUpdating(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/orders/${orderId}/status`, {
+      const response = await fetch(api(`/api/orders/${orderId}/status`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -90,7 +91,7 @@ export default function OrderDetailPage() {
     
     setUpdating(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/orders/${orderId}/qc`, {
+      const response = await fetch(api(`/api/orders/${orderId}/qc`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

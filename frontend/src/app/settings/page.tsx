@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Save, Mail, AlertCircle, Loader2 } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function SettingsPage() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ export default function SettingsPage() {
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/settings/ALERT_EMAIL')
+    fetch(api('/api/settings/ALERT_EMAIL'))
       .then(res => res.json())
       .then(data => {
         if (data && data.value) {
@@ -36,7 +37,7 @@ export default function SettingsPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch('http://localhost:8000/api/settings/ALERT_EMAIL', {
+      const res = await fetch(api('/api/settings/ALERT_EMAIL'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: email })

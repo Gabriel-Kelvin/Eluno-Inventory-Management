@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { LayoutGrid, List, AlertCircle, PackageCheck, PackageOpen, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 type Order = {
   id: number;
@@ -49,11 +50,11 @@ export function OrdersDashboard() {
 
   useEffect(() => {
     Promise.all([
-      fetch("http://localhost:8000/api/orders").then(res => {
+      fetch(api("/api/orders")).then(res => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
       }),
-      fetch("http://localhost:8000/api/orders/stats").then(res => {
+      fetch(api("/api/orders/stats")).then(res => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
       })
