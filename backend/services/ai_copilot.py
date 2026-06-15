@@ -25,7 +25,7 @@ def ask_copilot(db: Session, message: str, history: list) -> str:
         
     try:
         chat = client.chats.create(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash-lite",
             history=formatted_history,
             config=types.GenerateContentConfig(
                 tools=OPERATION_TOOLS,
